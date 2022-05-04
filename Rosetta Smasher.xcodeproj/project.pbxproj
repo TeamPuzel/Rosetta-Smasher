@@ -11,6 +11,7 @@
 		63233A472822A3F40056B570 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 63233A462822A3F40056B570 /* ContentView.swift */; };
 		63233A492822A3F50056B570 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63233A482822A3F50056B570 /* Assets.xcassets */; };
 		63233A4C2822A3F50056B570 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 63233A4B2822A3F50056B570 /* Preview Assets.xcassets */; };
+		63233A542822A95F0056B570 /* llvm-lipo in Resources */ = {isa = PBXBuildFile; fileRef = 63233A532822A95F0056B570 /* llvm-lipo */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,6 +21,7 @@
 		63233A482822A3F50056B570 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		63233A4B2822A3F50056B570 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		63233A4D2822A3F50056B570 /* Rosetta_Smasher.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Rosetta_Smasher.entitlements; sourceTree = "<group>"; };
+		63233A532822A95F0056B570 /* llvm-lipo */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.executable"; path = "llvm-lipo"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 			children = (
 				63233A442822A3F40056B570 /* Rosetta_SmasherApp.swift */,
 				63233A462822A3F40056B570 /* ContentView.swift */,
+				63233A532822A95F0056B570 /* llvm-lipo */,
 				63233A482822A3F50056B570 /* Assets.xcassets */,
 				63233A4D2822A3F50056B570 /* Rosetta_Smasher.entitlements */,
 				63233A4A2822A3F50056B570 /* Preview Content */,
@@ -128,6 +131,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				63233A4C2822A3F50056B570 /* Preview Assets.xcassets in Resources */,
+				63233A542822A95F0056B570 /* llvm-lipo in Resources */,
 				63233A492822A3F50056B570 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
