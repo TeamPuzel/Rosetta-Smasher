@@ -1,9 +1,4 @@
-//
-//  ContentView.swift
-//  Rosetta Smasher
-//
-//  Created by Wojciech David Wargocki on 04/05/2022.
-//
+
 
 import SwiftUI
 
