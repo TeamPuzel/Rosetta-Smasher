@@ -18,6 +18,9 @@ struct ContentView_Previews: PreviewProvider {
 
 
 class ShellCommands {
+    
+    
+    
     func safeShell(_ command: String) throws -> String {
         let task = Process()
         let pipe = Pipe()
@@ -25,9 +28,9 @@ class ShellCommands {
         task.standardOutput = pipe
         task.standardError = pipe
         task.arguments = ["-c", command]
-        task.executableURL = URL(fileURLWithPath: "/bin/zsh") //<--updated
+        task.executableURL = URL(fileURLWithPath: "/bin/zsh")
 
-        try task.run() //<--updated
+        try task.run()
         
         let data = pipe.fileHandleForReading.readDataToEndOfFile()
         let output = String(data: data, encoding: .utf8)!
@@ -38,51 +41,56 @@ class ShellCommands {
 
 
 struct MainWindow: View {
-    @State var filename = "Filename"
-    @State var showFileChooser = false
-    
+    @State var binaryPath = ""
+    @State var extractionPath = ""
+    @State var architectureIsArm = "arm64"
+    let stringPath = Bundle.main.path(forResource: "llvm-lipo", ofType:.none)
     
     var body: some View {
         VStack {
-            Picker(selection: /*@START_MENU_TOKEN@*/.constant(1)/*@END_MENU_TOKEN@*/, label: Text("Picker")) {
-                Text("Extract Arm").tag(1)
-                Text("Extract Intel").tag(2)
-            }
+            Picker(selection: $architectureIsArm, label: Text("Picker"),content: {
+                Text("Extract Arm").tag("arm64")
+                Text("Extract Intel").tag("x86_64")
+            })
             .pickerStyle(.segmented)
             .labelsHidden()
             .padding(.top,40)
             .padding(.horizontal,100)
+            
+            
+            
             Image(systemName: "terminal").padding(.top).font(.system(size:20))
-            Button("Select a Universal Binary")
-                  {
-                    let panel = NSOpenPanel()
-                    panel.allowsMultipleSelection = false
-                    panel.canChooseDirectories = false
-                    if panel.runModal() == .OK {
-                        self.filename = panel.url?.lastPathComponent ?? "<none>"
-                    }
-                  }
-                  .padding(5)
+            TextField("Path to Universal Binary", text: $binaryPath)
+                .padding(.vertical,5)
+                .padding(.horizontal)
             Image(systemName: "folder").padding(.top).font(.system(size:20))
-            Button("Select where to save the file")
-                  {
-                    let panel = NSOpenPanel()
-                    panel.allowsMultipleSelection = false
-                    panel.canChooseDirectories = false
-                    if panel.runModal() == .OK {
-                        self.filename = panel.url?.lastPathComponent ?? "<none>"
-                    }
-                  }
-                  .padding(5)
-            Image(systemName: "hammer").padding(.top).font(.system(size:20))
+            TextField("Path to where you want to save", text: $extractionPath)
+                .padding(.vertical,5)
+                .padding(.horizontal)
+            Text("(You can drag and drop into fields)").foregroundColor(.secondary).padding(-5).font(.system(size:11))
+            Image(systemName: "hammer").padding(.top,8).font(.system(size:20))
             Button("Extract")
                   {
-                    let panel = NSOpenPanel()
-                    panel.allowsMultipleSelection = false
-                    panel.canChooseDirectories = false
-                    if panel.runModal() == .OK {
-                        self.filename = panel.url?.lastPathComponent ?? "<none>"
-                    }
+                      do {
+                          
+                          let stringPathFormatted = stringPath!.replacingOccurrences(of: " ", with: #"\ "#)
+                          let binPathFormatted = binaryPath.replacingOccurrences(of: " ", with: #"\ "#)
+                          let extractPathFormatted = extractionPath.replacingOccurrences(of: " ", with: #"\ "#)
+                          
+                          
+                          let partOne = stringPathFormatted + " -extract "
+                          let partTwo = partOne + architectureIsArm + " " + binPathFormatted
+                          let partThree = partTwo + " -output " + extractPathFormatted + "/Executable"
+                          let result = try ShellCommands().safeShell(partThree)
+                          print(partThree)
+                          print(result)
+                      }
+                      catch {
+                          print("\(error)") //handle or silence the error here
+                      }
+                      
+                      
+                      
                   }
                   .padding(5)
                   .keyboardShortcut(.defaultAction)
@@ -92,6 +100,21 @@ struct MainWindow: View {
         .frame(width: 400, height: 300,alignment:.top)
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 struct VisualEffectView: NSViewRepresentable
 {
@@ -115,9 +138,4 @@ struct VisualEffectView: NSViewRepresentable
 }
 
 
-
-
-//VStack {
-//
-//}.frame(width:300,height:230)
-//    .overlay(RoundedRectangle(cornerRadius: 10).stroke(Color.secondary,lineWidth: 1).opacity(0.5))
+//"llvm-lipo -extract " + architecture + " " + MainWindow().binaryPath + " -output " + MainWindow().extractionPath
